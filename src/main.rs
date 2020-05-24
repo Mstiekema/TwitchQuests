@@ -1,7 +1,8 @@
-use chrono::prelude::*;
 use futures::prelude::*;
 use irc::client::prelude::*;
 use std::collections::LinkedList;
+
+mod structs;
 
 #[tokio::main]
 async fn main() -> irc::error::Result<()> {
@@ -33,7 +34,7 @@ async fn main() -> irc::error::Result<()> {
 }
 
 // Handle commands calls
-fn handle_command(msg: MessageObject, sender: irc::client::Sender) {
+fn handle_command(msg: structs::messages::MessageObject, sender: irc::client::Sender) {
   match msg.command_txt.as_ref() {
     "!test" => sender.send_privmsg(msg.channel, "Testing 123 MrDestructoid").unwrap(),
     _ => sender.send_privmsg(msg.channel, "A command was used :)").unwrap()
@@ -41,8 +42,8 @@ fn handle_command(msg: MessageObject, sender: irc::client::Sender) {
 }
 
 // Assign the message to the custom message object
-fn handle_messages(msg: irc::client::prelude::Message, target: &String, txt: &String) -> MessageObject {
-  let mut message = MessageObject {
+fn handle_messages(msg: irc::client::prelude::Message, target: &String, txt: &String) -> structs::messages::MessageObject {
+  let mut message = structs::messages::MessageObject {
     text: txt.to_string(),
     user: msg.source_nickname().unwrap().replace("#", "").to_string(),
     channel: target.to_string(),
@@ -57,29 +58,4 @@ fn handle_messages(msg: irc::client::prelude::Message, target: &String, txt: &St
   }
   
   return message;
-}
-
-#[derive(Clone)]
-struct MessageObject {
-  text: String,
-  channel: String,
-  user: String,
-  date: DateTime<Local>,
-  command: bool,
-  command_txt: String,
-  command_args: LinkedList<String>
-}
-
-impl Default for MessageObject {
-  fn default() -> MessageObject {
-    MessageObject {
-      text: String::from(""),
-      user: String::from(""),
-      channel: String::from(""),
-      date: Local::now(),
-      command: false,
-      command_txt: String::from(""),
-      command_args: LinkedList::new()
-    }
-  }
 }
