@@ -1,0 +1,13 @@
+[package]
+name = "twitch_quests"
+version = "0.1.0"
+authors = ["Mstiekema <contact@mstiekema.nl>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+irc = "0.14"
+tokio = { version = "0.2", features = ["full"] }
+futures = "0.3.5"
+chrono = "0.4"

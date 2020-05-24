@@ -1,0 +1,9 @@
+nickname = "yucibot"
+server = "irc.twitch.tv"
+port = 6667
+password = "oauth:61b6lttvmuikf1aswppfrzlp8jh1ur"
+use_tls = false
+encoding = "UTF-8"
+channels = ["#merijn", "#yucibot"]
+ping_time = 10
+ping_timeout = 300
